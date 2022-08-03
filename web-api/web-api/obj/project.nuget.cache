@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "uXp82vTRTlUrqfo6+qkaT0rqYYwczfQGIit4SY0FjNT6Oebil8Z+VjjINA+gk5VAuicGlM178WRs0uSE/21d3A==",
+  "dgSpecHash": "seRltkCUXd+16BJJ2Bq5TPx6lAQ1vTpaH8C8hwE33myYX+t5PthUwZQP7LfcteHtcX3v9ambuShnXd0RJiPZxA==",
   "success": true,
   "projectFilePath": "D:\\Projects\\enaza-test-task\\web-api\\web-api\\web-api.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Anton\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\Anton\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Anton\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
+    "C:\\Users\\Anton\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
+    "C:\\Users\\Anton\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
+    "C:\\Users\\Anton\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.4.0\\swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512"
+  ],
   "logs": []
 }
