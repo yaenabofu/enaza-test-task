@@ -27,7 +27,7 @@ namespace web_api.Repositories
 
             return userStates;
         }
-        public async Task<bool> Add(UserState userState)
+        public async Task<bool> Create(UserState userState)
         {
             if (userState == null)
             {
@@ -40,7 +40,7 @@ namespace web_api.Repositories
             return true;
         }
 
-        public async Task<bool> Remove(int userStateId)
+        public async Task<bool> Delete(int userStateId)
         {
             UserState userState = await Get(userStateId);
 
@@ -55,12 +55,17 @@ namespace web_api.Repositories
             return false;
         }
 
-        public async Task<UserState> Update(UserState userState)
+        public async Task<bool> Update(UserState userState)
         {
+            if (userState == null)
+            {
+                return false;
+            }
+
             databaseContext.Entry(userState).State = EntityState.Modified;
             await databaseContext.SaveChangesAsync();
 
-            return userState;
+            return true;
         }
     }
 }

@@ -8,7 +8,7 @@ using web_api.Models;
 
 namespace web_api.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class UserRepository : IRepository<User>, IUserValidator
     {
         private readonly DatabaseContext databaseContext;
         public UserRepository(DatabaseContext DatabaseContext)
@@ -17,32 +17,57 @@ namespace web_api.Repositories
         }
         public async Task<User> Get(int userId)
         {
-            var user = await databaseContext.Users.FindAsync(userId);
+            var user = await databaseContext.Users.Include(c => c.UserGroup).Include(c => c.UserState)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
 
             return user;
         }
 
         public async Task<IEnumerable<User>> Get()
         {
-            var users = await databaseContext.Users.ToListAsync();
+            var users = await databaseContext.Users.Include(c => c.UserGroup).Include(c => c.UserState).ToListAsync();
 
             return users;
         }
 
-        public async Task<bool> Add(User user)
+        public async Task<bool> Create(User user)
         {
             if (user == null)
             {
                 return false;
             }
 
+            bool isLoginExist = await CheckForExistingLogin(user);
+
+            if (isLoginExist)
+            {
+                return false;
+            }
+
+            Dictionary<int, UserGroup> userGroupsDict =
+                    await databaseContext.UserGroups.ToDictionaryAsync(p => p.UserGroupId, p => p);
+
+            UserGroup userGroup = userGroupsDict[user.UserGroupId];
+
+            if (userGroup.Code == UserGroupCode.Admin)
+            {
+                bool isEnoughAdmins = await CheckForEnoughAdmins();
+
+                if (isEnoughAdmins)
+                {
+                    return false;
+                }
+            }
+
             await databaseContext.Users.AddAsync(user);
             await databaseContext.SaveChangesAsync();
+
+            await ChangeUserState(user);
 
             return true;
         }
 
-        public async Task<bool> Remove(int userId)
+        public async Task<bool> Delete(int userId)
         {
             User user = await Get(userId);
 
@@ -62,15 +87,20 @@ namespace web_api.Repositories
             return false;
         }
 
-        public async Task<User> Update(User user)
+        public async Task<bool> Update(User user)
         {
+            if (user == null)
+            {
+                return false;
+            }
+
             databaseContext.Entry(user).State = EntityState.Modified;
             await databaseContext.SaveChangesAsync();
 
-            return user;
+            return true;
         }
 
-        public async Task<bool> CheckForAdmin()
+        public async Task<bool> CheckForEnoughAdmins()
         {
             const int MaxUsersWithAdminCode = 1;
 
@@ -85,10 +115,10 @@ namespace web_api.Repositories
 
             if (usersWithAdminCode.Count < MaxUsersWithAdminCode)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         public async Task<bool> CheckForExistingLogin(User addingUser)
@@ -101,10 +131,23 @@ namespace web_api.Repositories
 
             if (usersWithTypedLogin.Count() == MaxUsersWithSameLogin)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
+        }
+        public async Task<User> ChangeUserState(User addingUser)
+        {
+            Dictionary<UserStateCode, UserState> userStates =
+                   await databaseContext.UserStates.ToDictionaryAsync(p => p.Code, p => p);
+
+            int activeStateId = userStates[UserStateCode.Active].UserStateId;
+
+            addingUser.UserStateId = activeStateId;
+
+            await Update(addingUser);
+
+            return addingUser;
         }
     }
 }

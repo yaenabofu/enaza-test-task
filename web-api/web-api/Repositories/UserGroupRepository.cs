@@ -26,7 +26,7 @@ namespace web_api.Repositories
 
             return users;
         }
-        public async Task<bool> Add(UserGroup userGroup)
+        public async Task<bool> Create(UserGroup userGroup)
         {
             if (userGroup == null)
             {
@@ -38,7 +38,7 @@ namespace web_api.Repositories
 
             return true;
         }
-        public async Task<bool> Remove(int userGroupId)
+        public async Task<bool> Delete(int userGroupId)
         {
             UserGroup userGroup = await Get(userGroupId);
 
@@ -52,12 +52,17 @@ namespace web_api.Repositories
 
             return false;
         }
-        public async Task<UserGroup> Update(UserGroup userGroup)
+        public async Task<bool> Update(UserGroup userGroup)
         {
+            if (userGroup == null)
+            {
+                return false;
+            }
+
             databaseContext.Entry(userGroup).State = EntityState.Modified;
             await databaseContext.SaveChangesAsync();
 
-            return userGroup;
+            return true;
         }
     }
 }

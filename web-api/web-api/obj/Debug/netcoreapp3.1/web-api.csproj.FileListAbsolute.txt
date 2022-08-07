@@ -64,3 +64,4 @@ D:\Projects\enaza-test-task\web-api\web-api\bin\Debug\netcoreapp3.1\runtimes\win
 D:\Projects\enaza-test-task\web-api\web-api\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 D:\Projects\enaza-test-task\web-api\web-api\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 D:\Projects\enaza-test-task\web-api\web-api\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\Projects\enaza-test-task\web-api\web-api\obj\Debug\netcoreapp3.1\web-api.csproj.AssemblyReference.cache

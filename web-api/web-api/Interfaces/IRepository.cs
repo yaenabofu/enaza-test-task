@@ -9,8 +9,8 @@ namespace web_api.Interfaces
     {
         Task<T> Get(int objId);
         Task<IEnumerable<T>> Get();
-        Task<bool> Add(T obj);
-        Task<T> Update(T obj);
-        Task<bool> Remove(int objId);
+        Task<bool> Create(T obj);
+        Task<bool> Update(T obj);
+        Task<bool> Delete(int objId);
     }
 }

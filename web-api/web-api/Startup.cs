@@ -12,7 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using web_api.Interfaces;
 using web_api.Models;
+using web_api.Repositories;
 
 namespace web_api
 {
@@ -39,6 +41,9 @@ namespace web_api
             });
 
             services.AddDbContext<DatabaseContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IRepository<User>, UserRepository>();
+            services.AddScoped<IRepository<UserState>, UserStateRepository>();
+            services.AddScoped<IRepository<UserGroup>, UserGroupRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

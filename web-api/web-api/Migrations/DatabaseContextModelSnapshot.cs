@@ -43,6 +43,10 @@ namespace web_api.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("UserGroupId");
+
+                    b.HasIndex("UserStateId");
+
                     b.ToTable("Users");
                 });
 
@@ -80,6 +84,25 @@ namespace web_api.Migrations
                     b.HasKey("UserStateId");
 
                     b.ToTable("UserStates");
+                });
+
+            modelBuilder.Entity("web_api.Models.User", b =>
+                {
+                    b.HasOne("web_api.Models.UserGroup", "UserGroup")
+                        .WithMany()
+                        .HasForeignKey("UserGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("web_api.Models.UserState", "UserState")
+                        .WithMany()
+                        .HasForeignKey("UserStateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserGroup");
+
+                    b.Navigation("UserState");
                 });
 #pragma warning restore 612, 618
         }
