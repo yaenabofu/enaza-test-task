@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using web_api.Enums;
 using web_api.Interfaces;
@@ -58,6 +61,10 @@ namespace web_api.Repositories
                     return false;
                 }
             }
+
+            HMACSHA256Repository hmacsha256Repository = new HMACSHA256Repository();
+            string hashedPassword = hmacsha256Repository.Hash(user.Password);
+            user.Password = hashedPassword;
 
             await databaseContext.Users.AddAsync(user);
             await databaseContext.SaveChangesAsync();
