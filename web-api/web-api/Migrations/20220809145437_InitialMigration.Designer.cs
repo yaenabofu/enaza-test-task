@@ -10,7 +10,7 @@ using web_api.Models;
 namespace web_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220807071454_InitialMigration")]
+    [Migration("20220809145437_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,12 @@ namespace web_api.Migrations
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("UserGroupId")
                         .HasColumnType("int");

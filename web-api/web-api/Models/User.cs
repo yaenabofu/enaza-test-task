@@ -13,5 +13,7 @@ namespace web_api.Models
         public UserGroup UserGroup { get; set; }
         public int UserStateId { get; set; }
         public UserState UserState { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

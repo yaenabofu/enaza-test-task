@@ -11,7 +11,7 @@ using web_api.Models;
 
 namespace web_api.Repositories
 {
-    public class UserRepository : IRepository<User>, IUserValidator
+    public class UserRepository : IRepository<User>, IUserValidator, IUserGetter
     {
         private readonly DatabaseContext databaseContext;
         public UserRepository(DatabaseContext DatabaseContext)
@@ -155,6 +155,44 @@ namespace web_api.Repositories
             await Update(addingUser);
 
             return addingUser;
+        }
+
+        public async Task<User> Get(string login, string password)
+        {
+            bool result = string.IsNullOrEmpty(login) || string.IsNullOrWhiteSpace(login);
+
+            if (result)
+            {
+                return null;
+            }
+
+            result = string.IsNullOrEmpty(password) || string.IsNullOrWhiteSpace(password);
+
+            if (result)
+            {
+                return null;
+            }
+
+            HMACSHA256Repository hmacsha256Repository = new HMACSHA256Repository();
+            string hashedPassword = hmacsha256Repository.Hash(password);
+
+            var userByLoginAndPassword = await databaseContext.Users.FirstOrDefaultAsync(c => c.Login == login && c.Password == hashedPassword);
+
+            return userByLoginAndPassword;
+        }
+
+        public async Task<User> Get(string login)
+        {
+            bool result = string.IsNullOrEmpty(login) && string.IsNullOrWhiteSpace(login);
+
+            if (result)
+            {
+                return null;
+            }
+
+            var userByLogin = await databaseContext.Users.FirstOrDefaultAsync(c => c.Login == login);
+
+            return userByLogin;
         }
     }
 }
